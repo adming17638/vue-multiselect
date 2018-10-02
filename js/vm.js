@@ -2,12 +2,15 @@ var FIX = {},
     listBaseDepartment = [],
     customForm = document.getElementById('ifrmCustomForm').contentWindow;
 
+Vue.component('v-select', VueSelect.VueSelect);
+
 var vm = new Vue({
     el: '#vm',
     data: {
         FIX, // เก็บค่า fix
         listFixCustomTemplateGroup: [],
         listBaseCustomTemplate: [],
+        selectDepartment: [],
         listBaseDepartment: [],
         baseCustomTemplate: {},
         classInActive: 'fa fa-eye-slash fa-2x',

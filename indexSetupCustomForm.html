@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <meta charset="windows-874">
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Setup Custom Form</title>
     <!--===============================================================================================-->
@@ -17,10 +17,15 @@
     <script src="lib/vendor/select2/select2.min.js"></script>
     <!--===============================================================================================-->
     <script src="js/vm.js" defer></script>
+    <script src="js/vue-select.js"></script>
     <script src="js/data.js"></script>
     <!--===============================================================================================-->
 </head>
-
+<style>
+    .card-body {
+        background-color: white;
+    }
+</style>
 <body>
     <div id="vm">
         <!-- sidebar ซ้ายมือ-->
@@ -114,14 +119,15 @@
                 </div>
 
                 <!-- Department -->
-                <div v-show="checkHaveDepartment" class="card mt-3">
+                <div class="card mt-3">
                     <h5 class="card-header blue">Department</h5>
                     <div class="card-body">
-                        <select :disabled="checkEmpty" id="ddl_selectDepartment" multiple="multiple" style="width:100%">
-                            <option v-for="baseDepartment in listBaseDepartment" :value="baseDepartment.objectID">
-                                {{ baseDepartment.description }}
-                            </option>
-                        </select>
+                        <v-select
+                        v-model="selectDepartment"
+                        :options="listBaseDepartment"
+                        label="description"
+                        multiple
+                        ></v-select>
                     </div>
                 </div>
 
@@ -136,13 +142,15 @@
     </div>
 </body>
 <script>
-    $(document).ready(function () {
+
+    /* $(document).ready(function () {
         $('#ddl_selectDepartment').select2({
             width: 'resolve',
             placeholder: 'เลือกแผนก',
             allowClear: true
         });
-    });
+    }); */
+
 </script>
 
 </html>
