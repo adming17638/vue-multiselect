@@ -1,0 +1,48 @@
+.side-nav {
+    height: 100%;
+    width: 25%;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #cccccc;
+    overflow-x: hidden;
+    padding: 10px;
+    padding-top: 20px;
+    text-align: center;
+    border-left: 1px solid rgba(0,0,0, .7);
+    border-right: 1px solid rgba(0,0,0, .7);
+    font-size: 14px;
+}
+.container-right {
+    min-height: 100vh;
+    margin-left:25%;
+    background-color: rgba(56, 83, 153, .25);
+    padding: 10px;
+    overflow: hidden;
+}
+.blue {
+    background-color: #23408e;
+    color: #ffffff;
+}
+.fa {
+    cursor: pointer;
+}
+.icon-delete {
+    padding: 7px;
+}
+.icon-delete:hover {
+    opacity: 1;
+}
+
+.card-body {
+    background-color: rgba(204,204,204, .5);
+}
+tbody > tr {
+    background-color: white;
+    text-align: left;
+    cursor: pointer;
+}
+.outline-black {
+    outline: 2px solid #000000;
+}

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="windows-874">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Setup Custom Form</title>
+    <!--===============================================================================================-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="lib/vendor/font-awesome-4.7.0/css/font-awesome.css">
+    <link rel="stylesheet" href="js/style.css">
+    <link rel="stylesheet" href="lib/vendor/select2/select2.min.css">
+    <!--===============================================================================================-->
+    <script src="lib/vendor/jquery/jquery-3.2.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script src="../../../js/vue.js"></script>
+    <script src="lib/vendor/select2/select2.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="js/vm.js" defer></script>
+    <script src="js/data.js"></script>
+    <!--===============================================================================================-->
+</head>
+
+<body>
+    <div id="vm">
+        <!-- sidebar ซ้ายมือ-->
+        <div class="side-nav">
+            <h4><u>Template List</u></h4>
+            <!-- เลือก Type -->
+            <div class="border-top mt-3">
+                <div class="form-group row mt-3">
+                    <label for="ddl_typeLeft" class="col-sm-2 col-form-label"><b>Type</b></label>
+                    <div class="col-sm-10">
+                        <select @change="fillterListTemplate" id="ddl_typeLeft" class="form-control">
+                            <option disabled selected value="">Choose...</option>
+                            <option
+                            v-for="fixCustomTemplateGroup in listFixCustomTemplateGroup"
+                            :value="fixCustomTemplateGroup.objectID">
+                                {{ fixCustomTemplateGroup.description }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <!-- ตาราง template list -->
+                <table class="table table-hover mt-5">
+                    <thead class="blue">
+                        <tr>
+                            <th scope="col">Type</th>
+                            <th scope="col">Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr
+                        v-for="el in listBaseCustomTemplate"
+                        @click="readEditTemplate(el)"
+                        :class="['table-light', { 'outline-black' : el.objectID == baseCustomTemplate.objectID}]">
+                            <th scope="row">{{ FIX.FixCustomTemplateGroup[el.fixCustomTemplateGroup] }}</th>
+                            <td>{{ el.description }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- container ด้านชวา -->
+        <div class="container-right">
+            <div class="container">
+                <!-- (เพิ่ม, ลบ, inactive) -->
+                <div class="row border-bottom">
+                    <div class="col">
+                        <button @click="craeteNewTemplate()" type="button" class="btn blue" title="create new template">NEW</button>
+                    </div>
+                    <div class="col text-right">
+                        <i
+                        :class="classInActive"
+                        @click="toggleInActive()"
+                        aria-hidden="true"
+                        title="Inactive"></i> <!-- Inactive -->
+                        <i @click="deleteTemplate()" class="fa fa-trash fa-2x icon-delete" aria-hidden="true" title="Delete"></i> <!-- Delete -->
+                    </div>
+                </div>
+                <!-- (กรอก type, name) -->
+                <div class="row mt-4 mb-4">
+                    <div class="col  row">
+                        <label for="ddl_typeRight" class="col-sm-2 col-form-label"><b>Type</b></label>
+                        <div class="col-sm-10">
+                            <select
+                            @change="changeTemplateGroup()"
+                            v-model="baseCustomTemplate.fixCustomTemplateGroup"
+                            :disabled="checkEmpty"
+                            id="ddl_typeRight" class="form-control">
+                                <option v-for="fixCustomTemplateGroup in listFixCustomTemplateGroup" :value="fixCustomTemplateGroup.objectID">
+                                    {{ fixCustomTemplateGroup.description }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col row">
+                        <label for="txtTemplateDescript" class="col-sm-3 col-form-label"><b>Name</b></label>
+                        <div class="col-sm-7">
+                            <input
+                            v-model.trim="baseCustomTemplate.description"
+                            :disabled="checkEmpty"
+                            type="text"
+                            class="form-control"
+                            id="txtTemplateDescript">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- iFrame ของ Custom Form -->
+                <div class="embed-responsive embed-responsive-16by9">
+                    <iframe id="ifrmCustomForm" class="embed-responsive-item" src="CustomForm/min.html" allowfullscreen></iframe>
+                </div>
+
+                <!-- Department -->
+                <div v-show="checkHaveDepartment" class="card mt-3">
+                    <h5 class="card-header blue">Department</h5>
+                    <div class="card-body">
+                        <select :disabled="checkEmpty" id="ddl_selectDepartment" multiple="multiple" style="width:100%">
+                            <option v-for="baseDepartment in listBaseDepartment" :value="baseDepartment.objectID">
+                                {{ baseDepartment.description }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- save button -->
+                <div class="row mt-3">
+                    <div class="col text-right">
+                        <button @click="saveTemplate()" type="button" class="btn blue" title="save template">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    $(document).ready(function () {
+        $('#ddl_selectDepartment').select2({
+            width: 'resolve',
+            placeholder: 'เลือกแผนก',
+            allowClear: true
+        });
+    });
+</script>
+
+</html>
