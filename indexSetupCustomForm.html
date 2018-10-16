@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
+    <meta charset="windows-874">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Setup Custom Form</title>
     <!--===============================================================================================-->
@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="lib/vendor/font-awesome-4.7.0/css/font-awesome.css">
     <link rel="stylesheet" href="js/style.css">
     <link rel="stylesheet" href="lib/vendor/select2/select2.min.css">
+    <link rel="stylesheet" href="js/vue-multiselect.min.css">
     <!--===============================================================================================-->
     <script src="lib/vendor/jquery/jquery-3.2.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
@@ -17,13 +18,58 @@
     <script src="lib/vendor/select2/select2.min.js"></script>
     <!--===============================================================================================-->
     <script src="js/vm.js" defer></script>
-    <script src="js/vue-select.js"></script>
+    <script src="js/vue-multiselect.min.js"></script>
+    <script src="js/Notification.js"></script>
     <script src="js/data.js"></script>
     <!--===============================================================================================-->
 </head>
 <style>
-    .card-body {
-        background-color: white;
+    .notification {
+        padding: 20px;
+        background-color: #f44336;
+        color: #fff;
+        opacity: 1;
+        transition: opacity 0.6s;
+        margin-bottom: 15px;
+        border: 1px solid transparent;
+        border-radius: .3rem;
+        position: absolute;
+        z-index: 999;
+    }
+
+    .notification.success {background-color: #006400;}
+    .notification.info {background-color: #2dacd1;}
+    .notification.warning {background-color: #f39c12;}
+    .notification.error {background-color: #e85656;}
+    .notification.process {background-color: rgba(0,0,0,.9);}
+
+    .notification.top {top: 1%;}
+    .notification.middle {top: 50%}
+    .notification.bottom {bottom: 1%}
+    .notification.left {left: 1%;}
+    .notification.center {left: 50%;}
+    .notification.right {right: 1%;}
+
+    .closebtn {
+        margin-left: 15px;
+        color: #fff;
+        font-weight: bold;
+        float: right;
+        font-size: 22px;
+        line-height: 20px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .closebtn:hover {
+        color: black;
+    }
+
+    .fade-enter-active, .fade-leave-active {
+        transition: opacity .5s;
+        }
+        .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+        opacity: 0;
     }
 </style>
 <body>
@@ -119,38 +165,41 @@
                 </div>
 
                 <!-- Department -->
-                <div class="card mt-3">
+                <div v-show="checkHaveDepartment" class="card mt-3">
                     <h5 class="card-header blue">Department</h5>
                     <div class="card-body">
-                        <v-select
+                        <vue-multiselect
+                        @click='test()'
                         v-model="selectDepartment"
                         :options="listBaseDepartment"
+                        :multiple="true"
+                        :close-on-select="false"
+                        :hide-selected="true"
+                        :preserve-search="true"
+                        :clear-on-select="false"
+                        track-by="description"
                         label="description"
-                        multiple
-                        ></v-select>
+                        placeholder="เลือกแผนก.."
+                        >
+                            <template slot="tag" slot-scope="props">
+                                <span class="multiselect__tag"><span>{{ props.option.description }}</span>
+                                <span class="multiselect__tag-icon" @click="props.remove(props.option)"></span>
+                            </template>
+                        </vue-multiselect>
                     </div>
                 </div>
 
                 <!-- save button -->
                 <div class="row mt-3">
                     <div class="col text-right">
-                        <button @click="saveTemplate()" type="button" class="btn blue" title="save template">Save</button>
+                        <button v-show="!checkEmpty" @click="saveTemplate()" type="button" class="btn blue" title="save template">Save</button>
                     </div>
                 </div>
+
+                <imed-notification ref="notification"></imed-notification>
             </div>
         </div>
     </div>
 </body>
-<script>
-
-    /* $(document).ready(function () {
-        $('#ddl_selectDepartment').select2({
-            width: 'resolve',
-            placeholder: 'เลือกแผนก',
-            allowClear: true
-        });
-    }); */
-
-</script>
 
 </html>
